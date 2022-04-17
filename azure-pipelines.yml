@@ -66,7 +66,9 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'gotest'
         publishLocation: 'pipeline'
+    
     - task: HelmDeploy@0
+      displayName: Helm Upgrade
       inputs:
         connectionType: 'Azure Resource Manager'
         azureSubscription: 'aks'
@@ -76,9 +78,10 @@ stages:
         namespace: 'test'
         command: 'upgrade'
         chartType: 'FilePath'
-        chartPath: '$(Build.ArtifactStagingDirectory)/gotest-*.tgz'
+        chartPath: '$(System.DefaultWorkingDirectory)/_devops-assignment/gotest/devops-*.tgz'
         chartVersion: '$(Build.BuildId)'
         releaseName: 'gotest'
+        arguments: '--set image.tag=$(Build.BuildId)'
 
 
     
