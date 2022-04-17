@@ -1,5 +1,6 @@
 package main
 
+
 import(
 	"net/http"
 	"encoding/json"
@@ -30,6 +31,7 @@ func main(){
 	router.HandleFunc("/health", HealthCheck).Methods("GET")
 	router.HandleFunc("/date", currentDate).Methods("GET")
 	router.HandleFunc("/print", echoHandler).Methods("POST")
+	
 	
 	http.ListenAndServe(":8080", router)
 }
