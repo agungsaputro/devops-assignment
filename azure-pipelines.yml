@@ -51,16 +51,6 @@ stages:
         installKubectl: true
 
     - task: HelmDeploy@0
-      displayName: helm init
-      inputs:
-        connectionType: 'Azure Resource Manager'
-        azureSubscription: 'aks'
-        azureResourceGroup: 'devops'
-        kubernetesCluster: 'testing'
-        command: init
-        arguments: --client-only
-
-    - task: HelmDeploy@0
       displayName: Helm Packages
       inputs:
         connectionType: 'Azure Resource Manager'
