@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: agung1ds/devops-assignment:3
+  repository: agung1ds/devops-assignment
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""

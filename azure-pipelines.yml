@@ -9,16 +9,8 @@ pool:
   vmImage: 'ubuntu-latest'
  
 variables:
-  AzureSubscription: 'aks' # Name of the Service Connection
-  ApiName: 'devops-assignment'
-  ClusterResourceGroup: devops 
-  ChartPackage: '$(Build.ArtifactStagingDirectory)/$(ApiName)-$(Build.BuildNumber).tgz'
-  ChartPath: 'devops/'
   ImageName: 'agung1ds/devops-assignment:$(Build.BuildId)'
-  HelmVersion: 3.5.0
-  K8sNamespace: 'test'
-  KubernetesCluster: 'testing'
- 
+
 stages:
 - stage: Build
   displayName: Build image
@@ -60,6 +52,11 @@ stages:
     - task: HelmDeploy@0
       displayName: Helm Packages
       inputs:
+        connectionType: 'Azure Resource Manager'
+        azureSubscription: 'aks'
+        azureResourceGroup: 'devops'
+        kubernetesCluster: 'testing'
+        useClusterAdmin: true
         command: 'package'
         chartPath: 'devops'
         chartVersion: '$(Build.BuildId)'
@@ -79,18 +76,10 @@ stages:
         namespace: 'test'
         command: 'upgrade'
         chartType: 'FilePath'
-        chartPath: '$(System.DefaultWorkingDirectory)/agungsaputro.devops-assignment/gotest/gotest-*.tgz'
+        chartPath: '$(Build.ArtifactStagingDirectory)/gotest-*.tgz'
         chartVersion: '$(Build.BuildId)'
         releaseName: 'gotest'
-    - task: HelmDeploy@0
-      inputs:
-        connectionType: 'Azure Resource Manager'
-        azureSubscription: 'aks'
-        azureResourceGroup: 'devops'
-        kubernetesCluster: 'testing'
-        useClusterAdmin: true
-        namespace: 'test'
-        command: 'rollback'
+
 
     
 
