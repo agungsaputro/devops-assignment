@@ -8,7 +8,15 @@ pool:
   vmImage: 'ubuntu-latest'
  
 variables:
+  AzureSubscription: 'aks' # Name of the Service Connection
+  ApiName: 'devops-assignment'
+  ClusterResourceGroup: devops 
+  ChartPackage: '$(Build.ArtifactStagingDirectory)/$(ApiName)-$(Build.BuildNumber).tgz'
+  ChartPath: 'devops/'
   ImageName: 'agung1ds/devops-assignment:$(Build.BuildId)'
+  HelmVersion: 3.5.0
+  K8sNamespace: 'test'
+  KubernetesCluster: 'testing'
  
 stages:
 - stage: Build
@@ -37,6 +45,35 @@ stages:
         command: 'Push an image'
         imageName: '$(ImageName)'
       condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+- stage: Package
+  displayName: Helm Package
+  jobs:  
+  - job: Installer
+    displayName: Helm Installer
+    steps:
+    - task: HelmInstaller@0
+      displayName: 'Install Helm $(HelmVersion)'
+      inputs:
+        helmVersion: $(HelmVersion)
+        checkLatestHelmVersion: false
+        installKubectl: true
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+    - task: HelmDeploy@0
+      displayName: 'helm package'
+      inputs:
+        azureSubscriptionEndpoint: $(AzureSubscription)
+        azureResourceGroup: $(ClusterResourceGroup)
+        kubernetesCluster: $(KubernetesCluster)
+        command: 'package'
+        chartPath: $(ChartPath)
+        chartVersion: $(Build.BuildNumber)
+        save: false
+        namespace: $(K8sNamespace)
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')
+
+
 
 
     
