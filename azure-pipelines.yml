@@ -58,11 +58,13 @@ stages:
         helmVersion: '2.14.1'
         installKubectl: true
     - task: HelmDeploy@0
+      displayName: Helm Packages
       inputs:
         command: 'package'
         chartPath: 'devops'
         chartVersion: '$(Build.BuildId)'
     - task: PublishPipelineArtifact@1
+      displayName: Helm Deploy
       inputs:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'gotest'
