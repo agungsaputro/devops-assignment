@@ -81,7 +81,7 @@ stages:
         namespace: 'test'
         command: 'upgrade'
         chartType: 'FilePath'
-        chartPath: '$(Build.ArtifactStagingDirectory)/devops-*.tgz'
+        chartPath: '$(Build.ArtifactStagingDirectory)/devops-$(Build.BuildId).tgz'
         chartVersion: '$(Build.BuildId)'
         releaseName: 'gotest'
         arguments: '--set image.tag=$(Build.BuildId)'
