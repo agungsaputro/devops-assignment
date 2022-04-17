@@ -54,12 +54,19 @@ stages:
     displayName: Helm Installer
     steps:
     - task: HelmInstaller@0
-      displayName: 'Install Helm $(HelmVersion)'
       inputs:
-        helmVersion: $(HelmVersion)
-        checkLatestHelmVersion: false
+        helmVersion: '2.14.1'
         installKubectl: true
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    - task: HelmDeploy@0
+      inputs:
+        command: 'package'
+        chartPath: 'devops'
+        chartVersion: '$(Build.BuildId)'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'gotest'
+        publishLocation: 'pipeline'
     
 
     
