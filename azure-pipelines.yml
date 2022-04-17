@@ -49,6 +49,17 @@ stages:
       inputs:
         helmVersion: '2.14.1'
         installKubectl: true
+
+    - task: HelmDeploy@0
+      displayName: helm init
+      inputs:
+        connectionType: 'Azure Resource Manager'
+        azureSubscription: 'aks'
+        azureResourceGroup: 'devops'
+        kubernetesCluster: 'testing'
+        command: init
+        arguments: --client-only
+
     - task: HelmDeploy@0
       displayName: Helm Packages
       inputs:
@@ -60,6 +71,8 @@ stages:
         command: 'package'
         chartPath: 'devops'
         chartVersion: '$(Build.BuildId)'
+        destination: $(Build.ArtifactStagingDirectory)
+
     - task: PublishPipelineArtifact@0
       displayName: Helm Deploy
       inputs:
@@ -78,7 +91,7 @@ stages:
         namespace: 'test'
         command: 'upgrade'
         chartType: 'FilePath'
-        chartPath: '$(System.DefaultWorkingDirectory)/_devops-assignment/gotest/devops-*.tgz'
+        chartPath: '$(Build.ArtifactStagingDirectory)/devops-*.tgz'
         chartVersion: '$(Build.BuildId)'
         releaseName: 'gotest'
         arguments: '--set image.tag=$(Build.BuildId)'
