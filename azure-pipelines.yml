@@ -8,7 +8,15 @@ pool:
   vmImage: 'ubuntu-latest'
  
 variables:
+  AzureSubscription: 'AzureServiceConnection' # Name of the Service Connection
+  ApiName: 'devops-assigment'
+  ClusterResourceGroup: MicroserviceDemo  
+  ChartPackage: '$(Build.ArtifactStagingDirectory)/$(ApiName)-$(Build.BuildNumber).tgz'  
+  ChartPath: 'CustomerApi/CustomerApi/charts/$(ApiName)'
+  HelmVersion: 3.5.0
   ImageName: 'agung1ds/devops-assignment:$(Build.BuildId)'
+  K8sNamespace: '$(ApiName)-test'
+  KubernetesCluster: 'microservice-aks'
  
 stages:
 - stage: Build
@@ -37,3 +45,17 @@ stages:
         command: 'Push an image'
         imageName: '$(ImageName)'
       condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+- stage: Package
+  displayName: 'Package Helm Chart'
+  jobs:
+    - job: Helm
+      displayName: 'Build and Push Helm Chart'
+      steps:
+        - task: HelmInstaller@0
+          displayName: 'Install Helm $(HelmVersion)'
+          inputs:
+            helmVersion: $(HelmVersion)
+            checkLatestHelmVersion: false
+            installKubectl: true
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))   
