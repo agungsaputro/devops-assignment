@@ -1,13 +1,5 @@
 name : Docker-CI
-- task: HelmDeploy@0
-  inputs:
-    connectionType: 'Azure Resource Manager'
-    azureSubscription: 'Azure for Students(f67e9926-784a-4e8a-817f-43b717ab6cb5)'
-    azureResourceGroup: 'devops'
-    kubernetesCluster: 'testing'
-    useClusterAdmin: true
-    namespace: 'test'
-    command: 'ls'
+
 trigger:
   branches:
     include:
@@ -68,19 +60,9 @@ stages:
         checkLatestHelmVersion: false
         installKubectl: true
       condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+    
 
-    # - task: HelmDeploy@0
-    #   displayName: 'helm package'
-    #   inputs:
-    #     azureSubscriptionEndpoint: $(AzureSubscription)
-    #     azureResourceGroup: $(ClusterResourceGroup)
-    #     kubernetesCluster: $(KubernetesCluster)
-    #     command: 'package'
-    #     chartPath: $(ChartPath)
-    #     chartVersion: $(Build.BuildNumber)
-    #     save: false
-    #     namespace: $(K8sNamespace)
-    #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')
+    
 
 
 
