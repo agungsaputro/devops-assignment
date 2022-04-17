@@ -60,18 +60,18 @@ stages:
         installKubectl: true
       condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-    - task: HelmDeploy@0
-      displayName: 'helm package'
-      inputs:
-        azureSubscriptionEndpoint: $(AzureSubscription)
-        azureResourceGroup: $(ClusterResourceGroup)
-        kubernetesCluster: $(KubernetesCluster)
-        command: 'package'
-        chartPath: $(ChartPath)
-        chartVersion: $(Build.BuildNumber)
-        save: false
-        namespace: $(K8sNamespace)
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')
+    # - task: HelmDeploy@0
+    #   displayName: 'helm package'
+    #   inputs:
+    #     azureSubscriptionEndpoint: $(AzureSubscription)
+    #     azureResourceGroup: $(ClusterResourceGroup)
+    #     kubernetesCluster: $(KubernetesCluster)
+    #     command: 'package'
+    #     chartPath: $(ChartPath)
+    #     chartVersion: $(Build.BuildNumber)
+    #     save: false
+    #     namespace: $(K8sNamespace)
+    #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')
 
 
 
