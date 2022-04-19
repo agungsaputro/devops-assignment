@@ -6,7 +6,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 RUN go install github.com/cespare/reflex@latest
-EXPOSE 8080
+EXPOSE 8081
 CMD reflex -g '*.go' go run main.go --start-service
 
 FROM golang:1.16.5 AS builder
@@ -21,5 +21,5 @@ RUN go build -o app
 FROM alpine:latest AS production
 RUN apk add --no-cache ca-certificates
 COPY --from=builder app .
-EXPOSE 8080
+EXPOSE 8081
 CMD ./app
