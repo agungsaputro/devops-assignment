@@ -23,12 +23,13 @@ stages:
       inputs:
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'dockerhub'
-        command: 'Build an image'
+        command: 'build'
         dockerFile: '**/Dockerfile'
         imageName: '$(ImageName)'
         includeLatestTag: true
         useDefaultContext: false
         buildContext: '.'
+        arguments: '--target production'
      
     - task: Docker@1
       displayName: 'Push the Docker image to Dockerhub'
