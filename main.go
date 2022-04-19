@@ -33,7 +33,7 @@ func main(){
 	router.HandleFunc("/print", echoHandler).Methods("POST")
 	
 	
-	http.ListenAndServe(":8080", router)
+	http.ListenAndServe(":3000", router)
 }
 
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
