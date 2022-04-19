@@ -79,7 +79,7 @@ stages:
         azureResourceGroup: 'devops'
         kubernetesCluster: 'testing'
         useClusterAdmin: true
-        namespace: 'test'
+        namespace: 'default'
         command: 'upgrade'
         chartType: 'FilePath'
         chartPath: '$(Build.ArtifactStagingDirectory)/devops-$(Build.BuildId).tgz'
