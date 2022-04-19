@@ -29,6 +29,7 @@ stages:
         includeLatestTag: true
         useDefaultContext: false
         buildContext: '.'
+        arguments: '--target production'
      
     - task: Docker@1
       displayName: 'Push the Docker image to Dockerhub'

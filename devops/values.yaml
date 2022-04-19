@@ -8,11 +8,11 @@ image:
   repository: agung1ds/devops-assignment
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: 21
 
 imagePullSecrets: []
 nameOverride: "devops-assigment"
-fullnameOverride: "devops"
+fullnameOverride: "devops-assigment"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -21,7 +21,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "devops"
+  name: "devops-assigment"
 
 podAnnotations: {}
 
@@ -69,7 +69,7 @@ resources:
     memory: 128Mi
 
 autoscaling:
-  enabled: true
+  enabled: false
   minReplicas: 1
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
