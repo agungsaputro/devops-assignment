@@ -1,22 +1,32 @@
-FROM golang:1.16.5 as builder
+FROM golang:1.16-buster as builder
 
-ENV GOOS linux
-ENV CGO_ENABLED 0
+# ENV GOOS linux
+# ENV CGO_ENABLED 0
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
+COPY go.mod ./
+COPY go.sum ./
 RUN go mod download
 
-COPY . .
+COPY *.go ./
 
-RUN go build -o app
+RUN go build -o /docker-gs-ping
 
-FROM alpine:3.14 as production
+# RUN go build -o app
 
-RUN apk add --no-cache ca-certificates
+# FROM alpine:3.14 as production
 
-COPY --from=builder app .
+FROM gcr.io/distroless/base-debian10
+
+# RUN apk add --no-cache ca-certificates
+
+WORKDIR /
+
+COPY --from=builder /docker-gs-ping /docker-gs-ping
 
 EXPOSE 3000
-CMD ./app
+
+USER nonroot:nonroot
+
+ENTRYPOINT ["/docker-gs-ping"]
