@@ -17,7 +17,7 @@ RUN go build -o /docker-gs-ping
 
 # FROM alpine:3.14 as production
 
-FROM gcr.io/distroless/base-debian10
+FROM gcr.io/distroless/base-debian10 as production
 
 # RUN apk add --no-cache ca-certificates
 
